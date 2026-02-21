@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: checklist_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: BkMz0611
+      POSTGRES_PASSWORD: ******
     ports:
       - "5433:5432"
     volumes:
