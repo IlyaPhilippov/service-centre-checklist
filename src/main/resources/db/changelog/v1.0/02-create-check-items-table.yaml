@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: admin
+      changes:
+        - createTable:
+            tableName: check_items
+            columns:
+              - column:
+                  name: id
+                  type: "UUID"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: category
+                  type: "VARCHAR(50)"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: device_type
+                  type: "VARCHAR(50)"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: check_key
+                  type: "VARCHAR(50)"
+                  constraints:
+                    unique: true
+                    nullable: true
+
+              - column:
+                  name: required_checks
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: display_order
+                  type: "INT"
+                  defaultValue: "0"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: is_active
+                  type: "BOOLEAN"
+                  defaultValue: "true"
+                  constraints:
+                    nullable: false

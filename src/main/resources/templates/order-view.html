@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .order-info { background: #f5f5f5; padding: 15px; margin-bottom: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .status-PASSED { color: green; font-weight: bold; }
+        .status-FAILED { color: red; font-weight: bold; }
+        .status-PENDING { color: orange; }
+        .status-NOT_APPLICABLE { color: gray; font-style: italic; }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .btn-blue {
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/ui/">← Back to list</a>
+
+    <div class="order-info">
+        <h1>Order #<span th:text="${order.id}">id</span></h1>
+        <p><strong>Client:</strong> <span th:text="${order.clientName}">client</span></p>
+        <p><strong>Device:</strong> <span th:text="${order.deviceBrand} + ' ' + ${order.deviceModel}">device</span></p>
+        <p><strong>Type:</strong> <span th:text="${order.deviceType}">type</span></p>
+        <p><strong>Created:</strong> <span th:text="${order.createdAt}">date</span></p>
+        <p><strong>Status:</strong> <span th:text="${order.status}" style="font-weight: bold;">status</span></p>
+    </div>
+
+    <h2>Pre-Repair Checklist</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Check</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result : ${order.checkResults}"
+            th:if="${result.checklistType == 'PRE_REPAIR'}">
+            <td th:text="${result.checkItem.name}">check name</td>
+            <td>
+                <span th:text="${result.status}"
+                      th:class="'status-' + ${result.status}">status</span>
+            </td>
+            <td>
+                <form th:if="${result.status == 'PENDING'}"
+                      th:action="@{'/ui/check-results/' + ${result.id} + '/status'}"
+                      method="post">
+                    <input type="hidden" name="status" value="PASSED" />
+                    <input type="hidden" name="orderId" th:value="${order.id}" />
+                    <button type="submit" class="btn-small">✓ Pass</button>
+                </form>
+                <form th:if="${result.status == 'PENDING'}"
+                      th:action="@{'/ui/check-results/' + ${result.id} + '/status'}"
+                      method="post">
+                    <input type="hidden" name="status" value="FAILED" />
+                    <input type="hidden" name="orderId" th:value="${order.id}" />
+                    <button type="submit" class="btn-small">✗ Fail</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{'/ui/orders/' + ${order.id} + '/post-repair'}"
+          method="post"
+          style="margin-top: 20px;">
+        <button type="submit" class="btn">Start Post-Repair Checklist</button>
+    </form>
+
+    <div th:with="postRepairChecks=${order.checkResults != null ? order.checkResults.?[checklistType == 'POST_REPAIR'] : {}}">
+        <div th:if="${postRepairChecks != null and !#lists.isEmpty(postRepairChecks)}">
+            <h2 style="margin-top: 30px;">Post-Repair Checklist</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Check</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="result : ${postRepairChecks}">
+                    <td th:text="${result.checkItem.name}">check name</td>
+                    <td>
+                        <span th:text="${result.status}"
+                              th:class="'status-' + ${result.status}">status</span>
+                    </td>
+                    <td>
+                        <form th:if="${result.status == 'PENDING'}"
+                              th:action="@{'/ui/check-results/' + ${result.id} + '/status'}"
+                              method="post">
+                            <input type="hidden" name="status" value="PASSED" />
+                            <input type="hidden" name="orderId" th:value="${order.id}" />
+                            <button type="submit" class="btn-small">✓ Pass</button>
+                        </form>
+                        <form th:if="${result.status == 'PENDING'}"
+                              th:action="@{'/ui/check-results/' + ${result.id} + '/status'}"
+                              method="post">
+                            <input type="hidden" name="status" value="FAILED" />
+                            <input type="hidden" name="orderId" th:value="${order.id}" />
+                            <button type="submit" class="btn-small">✗ Fail</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <form th:action="@{'/ui/orders/' + ${order.id} + '/complete'}" method="post">
+                    <button type="submit" class="btn btn-blue"
+                            th:if="${#lists.isEmpty(postRepairChecks.?[status == 'PENDING'])}">
+                        ✓ Complete Order
+                    </button>
+                </form>
+                <p th:if="${!#lists.isEmpty(postRepairChecks.?[status == 'PENDING'])}"
+                   style="color: orange;">
+                    Complete all checks before closing the order
+                </p>
+                <p th:if="${param.error}" style="color: red;">
+                    Cannot complete order: some checks are still pending
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center; padding: 20px; border-top: 1px solid #ddd;">
+        <a href="/ui/" class="btn" style="background-color: #4CAF50; padding: 12px 30px; font-size: 16px;">
+            ← Back to Main Page
+        </a>
+        <a href="/ui/orders/new" class="btn" style="background-color: #2196F3; padding: 12px 30px; font-size: 16px; margin-left: 10px;">
+            + Create New Order
+        </a>
+    </div>
+</div>
+</body>
+</html>

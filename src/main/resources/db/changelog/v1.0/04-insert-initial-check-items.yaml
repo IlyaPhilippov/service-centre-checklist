@@ -1,0 +1,119 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: admin
+      changes:
+        # ----- SMARTPHONE CHECKS -----
+        # ----- SMARTPHONE CHECKS -----
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Phone turns on?" }
+              - column: { name: category, value: "BASIC" }
+              - column: { name: device_type, value: "SMARTPHONE" }
+              - column: { name: check_key, value: "PHONE_ON" }
+              - column: { name: required_checks, value: null }
+              - column: { name: display_order, value: "1" }
+              - column: { name: is_active, value: "true" }
+
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Display works?" }
+              - column: { name: category, value: "DISPLAY" }
+              - column: { name: device_type, value: "SMARTPHONE" }
+              - column: { name: check_key, value: "DISPLAY_WORKS" }
+              - column: { name: required_checks, value: "PHONE_ON" }
+              - column: { name: display_order, value: "2" }
+              - column: { name: is_active, value: "true" }
+
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Touchscreen works?" }
+              - column: { name: category, value: "TOUCH" }
+              - column: { name: device_type, value: "SMARTPHONE" }
+              - column: { name: check_key, value: "TOUCH_WORKS" }
+              - column: { name: required_checks, value: "PHONE_ON,DISPLAY_WORKS" }
+              - column: { name: display_order, value: "3" }
+              - column: { name: is_active, value: "true" }
+
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Speaker works?" }
+              - column: { name: category, value: "AUDIO" }
+              - column: { name: device_type, value: "SMARTPHONE" }
+              - column: { name: check_key, value: "SPEAKER_WORKS" }
+              - column: { name: required_checks, value: "PHONE_ON" }
+              - column: { name: display_order, value: "4" }
+              - column: { name: is_active, value: "true" }
+
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Microphone works?" }
+              - column: { name: category, value: "AUDIO" }
+              - column: { name: device_type, value: "SMARTPHONE" }
+              - column: { name: check_key, value: "MICROPHONE_WORKS" }
+              - column: { name: required_checks, value: "PHONE_ON" }
+              - column: { name: display_order, value: "5" }
+              - column: { name: is_active, value: "true" }
+
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Main camera works?" }
+              - column: { name: category, value: "CAMERA" }
+              - column: { name: device_type, value: "SMARTPHONE" }
+              - column: { name: check_key, value: "CAMERA_WORKS" }
+              - column: { name: required_checks, value: "PHONE_ON,DISPLAY_WORKS" }
+              - column: { name: display_order, value: "6" }
+              - column: { name: is_active, value: "true" }
+
+        # ----- LAPTOP CHECKS -----
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Laptop turns on?" }
+              - column: { name: category, value: "BASIC" }
+              - column: { name: device_type, value: "LAPTOP" }
+              - column: { name: display_order, value: "1" }
+              - column: { name: is_active, value: "true" }
+
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Display works?" }
+              - column: { name: category, value: "DISPLAY" }
+              - column: { name: device_type, value: "LAPTOP" }
+              - column: { name: display_order, value: "2" }
+              - column: { name: is_active, value: "true" }
+
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Keyboard works?" }
+              - column: { name: category, value: "KEYBOARD" }
+              - column: { name: device_type, value: "LAPTOP" }
+              - column: { name: display_order, value: "3" }
+              - column: { name: is_active, value: "true" }
+
+        - insert:
+            tableName: check_items
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: name, value: "Touchpad works?" }
+              - column: { name: category, value: "TOUCHPAD" }
+              - column: { name: device_type, value: "LAPTOP" }
+              - column: { name: display_order, value: "4" }
+              - column: { name: is_active, value: "true" }

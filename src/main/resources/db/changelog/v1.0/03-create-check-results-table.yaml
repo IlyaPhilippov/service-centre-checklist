@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: admin
+      changes:
+        - createTable:
+            tableName: check_results
+            columns:
+              - column:
+                  name: id
+                  type: "UUID"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: repair_order_id
+                  type: "UUID"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_check_results_repair_order
+                    references: repair_orders(id)
+
+              - column:
+                  name: check_item_id
+                  type: "UUID"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_check_results_check_item
+                    references: check_items(id)
+
+              - column:
+                  name: checklist_type
+                  type: "VARCHAR(20)"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: status
+                  type: "VARCHAR(20)"
+                  defaultValue: "PENDING"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: checked_at
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: notes
+                  type: "TEXT"
+                  constraints:
+                    nullable: true

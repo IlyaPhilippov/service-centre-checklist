@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Center Checklist</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Service Center Checklist</h1>
+    <a href="/ui/orders/new" class="btn">+ New Order</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Device</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">id</td>
+            <td th:text="${order.clientName}">client</td>
+            <td th:text="${order.deviceBrand} + ' ' + ${order.deviceModel}">device</td>
+            <td th:text="${order.createdAt}">date</td>
+            <td>
+                <a th:href="@{'/ui/orders/' + ${order.id}}">View</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

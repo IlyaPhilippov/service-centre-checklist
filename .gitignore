@@ -1,0 +1,35 @@
+# Compiled files
+*.class
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+
+# Logs
+logs/
+*.log
+
+# Docker
+**/docker-compose.override.yml
+
+# Application properties
+*.properties
+application-local.yml
+application-dev.yml
+
+# Maven
+log/
+!/mvnw
+!/mvnw.cmd
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: checklist-postgres
+    environment:
+      POSTGRES_DB: checklist_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: BkMz0611
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - checklist-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: checklist-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/checklist_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: BkMz0611
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8080:8080"
+    networks:
+      - checklist-network
+
+  redis:
+    image: redis:alpine
+    container_name: checklist-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - checklist-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  checklist-network:
+    driver: bridge
